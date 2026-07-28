@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover the Journey | The Girl Who Carried Home</title>
+  
+  <!-- Fonts & Styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+  
+  <!-- GSAP & Three.js Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f5d67b;
+      --glass: rgba(12, 25, 30, 0.65);
+      --glass-border: rgba(212, 175, 55, 0.25);
+      --text-main: #ffffff;
+      --text-sub: #d0e1e3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #030a0c;
+      color: var(--text-main);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* WebGL Background Canvas */
+    #webgl-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 60px 20px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 90px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Glassmorphic Cards */
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 35px 28px;
+      border-radius: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      transition: border-color 0.4s ease, transform 0.4s ease;
+    }
+
+    .glass-card:hover {
+      border-color: var(--gold);
+    }
+
+    .sec-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 22px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* 1. Quote of the Visit */
+    .visit-quote p {
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--gold-light);
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    /* 2. Author Message */
+    .story-behind p {
+      font-size: 0.98rem;
+      line-height: 1.8;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+      text-align: justify;
+    }
+
+    /* 3. Before & After Grid */
+    .before-after-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .ba-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      padding: 22px 16px;
+      border-radius: 18px;
+      text-align: center;
+    }
+
+    .ba-box h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      margin-bottom: 15px;
+    }
+
+    .ba-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    /* 4. Interactive Suitcase Grid */
+    .suitcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .item-btn {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 20px;
+      border-radius: 18px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .item-btn:hover {
+      transform: translateY(-5px);
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
+    }
+
+    /* 5. What You'll Feel */
+    .feel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .feel-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      padding: 18px 14px;
+      border-radius: 16px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    .feel-card strong {
+      display: block;
+      color: var(--gold);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    /* 6. Dynamic Timeline */
+    .journey-timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+    }
+
+    .journey-timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(212,175,55,0.1), rgba(212,175,55,0.8), rgba(212,175,55,0.1));
+      transform: translateX(-50%);
+    }
+
+    .station {
+      position: relative;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 22px;
+      border-radius: 20px;
+      width: 85%;
+      margin: 0 auto;
+      text-align: center;
+      transition: all 0.5s ease;
+      opacity: 0.4;
+      transform: scale(0.95);
+    }
+
+    .station.active {
+      opacity: 1;
+      transform: scale(1.03);
+      border-color: var(--gold);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+    }
+
+    .station h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .station p {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-sub);
+    }
+
+    /* Modal Overlay for Suitcase */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.88);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 200;
+      backdrop-filter: blur(15px);
+    }
+
+    .modal-card {
+      background: #08171b;
+      border: 1px solid var(--gold);
+      padding: 35px 28px;
+      border-radius: 24px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    .modal-card h3 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    .modal-card p {
+      color: var(--text-sub);
+      line-height: 1.7;
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
+
+    .close-btn {
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Back Home Button */
+    .nav-back {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      border: 1px solid var(--glass-border);
+      padding: 10px 20px;
+      border-radius: 30px;
+      transition: 0.3s;
+    }
+
+    .btn-back:hover {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.1);
+    }
+
+    @media (max-width: 600px) {
+      .before-after-grid, .suitcase-grid, .feel-grid {
+        grid-template-columns: 1fr;
+      }
+      .station {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="webgl-bg"></canvas>
+
+  <div class="container">
+    
+    <div class="nav-back">
+      <a href="index.html" class="btn-back">← Back to Main Page</a>
+    </div>
+
+    <!-- 1. Quote of the Visit -->
+    <section class="glass-card visit-quote">
+      <div class="sec-title">Quote of the Visit</div>
+      <p id="random-quote">"Hope was not a place. It was the weight she carried in her heart."</p>
+    </section>
+
+    <!-- 2. Author Message -->
+    <section class="glass-card story-behind">
+      <div class="sec-title">Why This Story Had to Be Told</div>
+      <p>This book was not born out of imagination alone; it was carved from memory, displacement, and resilience. Walking through borders and oceans leaves marks that time cannot erase.</p>
+      <p>I wrote this story to give a voice to millions who carry home in an unspoken suitcase, searching for peace without losing who they are.</p>
+    </section>
+
+    <!-- 3. Before & After -->
+    <section class="glass-card">
+      <div class="sec-title">Before & After The Journey</div>
+      <div class="before-after-grid">
+        <div class="ba-box">
+          <h4>Before Reading</h4>
+          <ul>
+            <li>• Seeing refugees as numbers</li>
+            <li>• Distant news stories</li>
+            <li>• Unclear personal loss</li>
+          </ul>
+        </div>
+        <div class="ba-box">
+          <h4>After Reading</h4>
+          <ul>
+            <li>• Feeling individual human souls</li>
+            <li>• Deep emotional empathy</li>
+            <li>• Understanding true home</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Interactive Suitcase -->
+    <section class="glass-card">
+      <div class="sec-title">The Suitcase</div>
+      <p style="text-align: center; color: var(--text-sub); font-size: 0.9rem; margin-bottom: 20px;">Tap an item to unlock a hidden story memory:</p>
+      <div class="suitcase-grid">
+        <button class="item-btn" onclick="openModal('soil')">🌱 Soil Sample</button>
+        <button class="item-btn" onclick="openModal('key')">🔑 Old Brass Key</button>
+        <button class="item-btn" onclick="openModal('photo')">📸 Faded Photo</button>
+        <button class="item-btn" onclick="openModal('letter')">✉️ Unsent Letter</button>
+      </div>
+    </section>
+
+    <!-- 5. What You'll Feel -->
+    <section class="glass-card">
+      <div class="sec-title">What You'll Feel</div>
+      <div class="feel-grid">
+        <div class="feel-card">
+          <strong>Heartbreak</strong>
+          Realizing what leaving everything behind truly costs.
+        </div>
+        <div class="feel-card">
+          <strong>Resilience</strong>
+          Watching human spirit survive against impossible odds.
+        </div>
+        <div class="feel-card">
+          <strong>Warmth</strong>
+          Small acts of kindness in dark, unexpected places.
+        </div>
+        <div class="feel-card">
+          <strong>Hope</strong>
+          A belief that home is built within us everywhere.
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Scroll Timeline -->
+    <section class="glass-card">
+      <div class="sec-title">The Geographic Journey</div>
+      <div class="journey-timeline">
+        <div class="station" id="st-sudan">
+          <h4>Sudan</h4>
+          <p>Where roots run deep and memories begin.</p>
+        </div>
+        <div class="station" id="st-ssudan">
+          <h4>South Sudan</h4>
+          <p>Crossroads of survival and difficult paths.</p>
+        </div>
+        <div class="station" id="st-turkey">
+          <h4>Turkey</h4>
+          <p>Waiting in shadows for a chance forward.</p>
+        </div>
+        <div class="station" id="st-aegean">
+          <h4>The Aegean Sea</h4>
+          <p>Silent waves carrying fragile dreams.</p>
+        </div>
+        <div class="station" id="st-greece">
+          <h4>Greece</h4>
+          <p>A shoreline reached, but victory not yet won.</p>
+        </div>
+        <div class="station" id="st-calais">
+          <h4>Calais</h4>
+          <p>The waiting grounds under cold skies.</p>
+        </div>
+        <div class="station" id="st-london">
+          <h4>London</h4>
+          <p>A new dawn, carrying home within.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-card">
+      <h3 id="modal-title">Memory Title</h3>
+      <p id="modal-body">Memory details text goes here...</p>
+      <button class="close-btn" onclick="closeModal()">Close Memory</button>
+    </div>
+  </div>
+
+  <script>
+    // 1. Random Quotes
+    const quotes = [
+      '"Hope was not a place. It was the weight she carried in her heart."',
+      '"To leave home is to die a little, so that you may live again."',
+      '"Borders are drawn on maps, but never on human souls."',
+      '"She carried the soil of her birthplace inside her shoes."'
+    ];
+    document.getElementById('random-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+    // 2. Modal Data
+    const stories = {
+      soil: { title: "Soil Sample", text: "A handful of earth taken from the backyard before dawn. A physical reminder that her foundation remains unbroken." },
+      key: { title: "Old Brass Key", text: "It unlocks a door that no longer stands, but keeping it means believing in return." },
+      photo: { title: "Faded Photo", text: "A blurred picture of laughter under the mango tree. The faces are fading, but the warmth stays." },
+      letter: { title: "Unsent Letter", text: "Words written during dark nights at sea, addressed to a friend left behind." }
+    };
+
+    function openModal(item) {
+      document.getElementById('modal-title').innerText = stories[item].title;
+      document.getElementById('modal-body').innerText = stories[item].text;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // 3. Three.js WebGL Dynamic Particle System
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-bg'), alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const count = 700;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+
+    for (let i = 0; i < count * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 15;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({ size: 0.03, color: 0xd4af37, transparent: true, opacity: 0.6 });
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    camera.position.z = 5;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      particles.rotation.y += 0.001;
+      particles.rotation.x += 0.0005;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // 4. GSAP Scroll Triggering for Timeline
+    gsap.registerPlugin(ScrollTrigger);
+
+    const stations = document.querySelectorAll('.station');
+    stations.forEach((st) => {
+      ScrollTrigger.create({
+        trigger: st,
+        start: "top 70%",
+        end: "bottom 30%",
+        onEnter: () => st.classList.add('active'),
+        onLeaveBack: () => st.classList.remove('active')
+      });
+    });
+  </script>
+</body>
+</html>
