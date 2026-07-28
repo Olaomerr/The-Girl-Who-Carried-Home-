@@ -1,282 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Girl Who Carried Home — OLA OMER</title>
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE GIRL WHO CARRIED HOME | OLA OMER</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-top: #081a1d;
+            --bg-mid: #0b242a;
+            --bg-bottom: #825619;
+            --gold-gradient: linear-gradient(135deg, #e3b844 0%, #d4af37 50%, #9e7019 100%);
+            --btn-glass: rgba(14, 32, 38, 0.78);
+            --btn-border: rgba(255, 255, 255, 0.14);
+            --text-main: #ffffff;
+            --text-sub: #c9d8d8;
+        }
 
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(135deg, #0d1f2d 0%, #1d2d44 50%, #3e2723 100%);
-      --gold-primary: #d4af37;
-      --gold-hover: #f3e5ab;
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(212, 175, 55, 0.2);
-      --text-main: #f0f0f0;
-      --text-muted: #a0a0a0;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 16px 40px;
+        }
 
-    body {
-      background: var(--bg-gradient);
-      background-attachment: fixed;
-      color: var(--text-main);
-      font-family: 'Montserrat', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem;
-      overflow-x: hidden;
-    }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-    }
+        /* Live Counter Badge */
+        .live-counter {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(8, 24, 28, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            backdrop-filter: blur(8px);
+        }
 
-    /* Cover Styling */
-    .cover-wrapper {
-      position: relative;
-      width: 220px;
-      border-radius: 12px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.2);
-      overflow: hidden;
-      transition: transform 0.3s ease;
-    }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2eb872;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #2eb872;
+            animation: pulse 1.8s infinite;
+        }
 
-    .cover-wrapper:hover {
-      transform: translateY(-5px) scale(1.02);
-    }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1); }
+        }
 
-    .cover-img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+        /* Cover Image */
+        .cover-wrapper {
+            margin-top: 45px;
+            margin-bottom: 22px;
+            width: 215px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65);
+            overflow: hidden;
+        }
 
-    /* Typography */
-    h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.8rem;
-      text-align: center;
-      color: var(--gold-primary);
-      letter-spacing: 1px;
-      margin-top: 0.5rem;
-    }
+        .cover-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px;
+        }
 
-    p.subtitle {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: -0.5rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+        /* Typography - Exact Match */
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            margin-bottom: 6px;
+            line-height: 1.25;
+            text-transform: uppercase;
+        }
 
-    /* Visitor Counter Badge */
-    .counter-badge {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(10px);
-      padding: 0.4rem 1rem;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      color: var(--gold-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      animation: pulse 2s infinite alternate;
-    }
+        .author {
+            font-family: 'Cinzel', serif;
+            font-size: 0.88rem;
+            letter-spacing: 3px;
+            color: #cbb782;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
 
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background-color: #00ff88;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #00ff88;
-    }
+        .quote {
+            font-style: italic;
+            font-size: 0.92rem;
+            color: var(--text-sub);
+            margin-bottom: 26px;
+            line-height: 1.4;
+            font-weight: 400;
+            padding: 0 8px;
+        }
 
-    /* CTAs / Links */
-    .links-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
+        /* Buttons Container */
+        .links-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-bottom: 35px;
+        }
 
-    .btn {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(10px);
-      color: var(--text-main);
-      padding: 1rem;
-      border-radius: 10px;
-      text-decoration: none;
-      text-align: center;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        /* Golden Primary Button with Animation */
+        .btn-gold {
+            position: relative;
+            background: var(--gold-gradient);
+            color: #1a1200;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 16px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+            animation: goldGlow 3s infinite ease-in-out, pulseScale 2.5s infinite ease-in-out;
+        }
 
-    .btn-primary {
-      background: linear-gradient(45deg, #d4af37, #996515);
-      color: #0d1f2d;
-      border: none;
-      font-weight: 700;
-    }
+        /* Light Shimmer Effect traversing the button */
+        .btn-gold::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(
+                60deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(25deg);
+            animation: shimmer 3.5s infinite;
+        }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      border-color: var(--gold-primary);
-      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
-    }
+        @keyframes shimmer {
+            0% { left: -60%; }
+            30% { left: 120%; }
+            100% { left: 120%; }
+        }
 
-    .btn-primary:hover {
-      background: linear-gradient(45deg, #f3e5ab, #d4af37);
-      box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
-    }
+        @keyframes goldGlow {
+            0%, 100% { box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25); }
+            50% { box-shadow: 0 8px 30px rgba(227, 184, 68, 0.5); }
+        }
 
-    /* Backpack Element */
-    .backpack-widget {
-      width: 100%;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 1.2rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+        @keyframes pulseScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
 
-    .backpack-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      transition: transform 0.3s ease;
-    }
+        /* Dark Glass Buttons */
+        .btn-glass {
+            background: var(--btn-glass);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 16px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid var(--btn-border);
+            backdrop-filter: blur(10px);
+            transition: background 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    .backpack-widget:hover .backpack-icon {
-      transform: scale(1.2) rotate(-5deg);
-    }
+        .btn-glass:active {
+            transform: scale(0.98);
+            background: rgba(22, 48, 54, 0.85);
+        }
 
-    .backpack-content {
-      display: none;
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
+        /* Footer Section */
+        .footer-note {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            width: 100%;
+        }
 
-    /* Animations */
-    @keyframes pulse {
-      0% { opacity: 0.7; }
-      100% { opacity: 1; }
-    }
+        .footer-note h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #e5be53;
+            margin-bottom: 6px;
+        }
 
-    footer {
-      margin-top: auto;
-      padding-top: 2rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-  </style>
+        .footer-note p {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-bottom: 18px;
+            padding: 0 5px;
+        }
+
+        .btn-subtle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(227, 184, 68, 0.18);
+            border: 1px solid rgba(227, 184, 68, 0.35);
+            color: #f5d67b;
+            padding: 10px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    
-    <!-- Live Visitor Badge -->
-    <div class="counter-badge">
-      <span class="live-dot"></span>
-      <span id="visitorCount">28 readers exploring right now</span>
-    </div>
-
-    <!-- Cover Image -->
-    <div class="cover-wrapper">
-      <img src="cover.png" onerror="this.onerror=null; this.src='cover.jpg';" alt="The Girl Who Carried Home Cover" class="cover-img">
-    </div>
-
-    <!-- Header -->
-    <div>
-      <h1>The Girl Who Carried Home</h1>
-      <p class="subtitle">A Novel by OLA OMER</p>
-    </div>
-
-    <!-- Links / Actions -->
-    <div class="links-container">
-      <a href="#" class="btn btn-primary">
-        <span>✨ Order Founder's Edition</span>
-      </a>
-      
-      <a href="#" class="btn">
-        <span>📖 Read Chapter One</span>
-      </a>
-
-      <!-- Interactive Backpack -->
-      <div class="backpack-widget" onclick="toggleBackpack()">
-        <div class="backpack-icon">🎒</div>
-        <strong style="color: var(--gold-primary);">Unpack Her Journey</strong>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Click to look inside the bag</p>
-        <div class="backpack-content" id="backpackDetails">
-          <p>Inside lies a compass, hand-written letters from home, and memories carried across borders. Every step brings her closer to what was lost.</p>
+    <div class="container">
+        <!-- Live Visitor Badge -->
+        <div class="live-counter">
+            <span class="pulse-dot"></span>
+            <span id="counter-val">170</span>
         </div>
-      </div>
 
-      <a href="#" class="btn">
-        <span>💌 Join the Reader's Club</span>
-      </a>
+        <!-- Book Cover -->
+        <div class="cover-wrapper">
+            <img src="cover.png" alt="THE GIRL WHO CARRIED HOME" onerror="this.onerror=null; this.src='https://via.placeholder.com/215x315/081a1d/d4af37?text=Cover+Image';">
+        </div>
+
+        <!-- Book Info -->
+        <h1>THE GIRL WHO CARRIED HOME</h1>
+        <div class="author">OLA OMER</div>
+        <p class="quote">"Some people leave their home. Others carry it forever."</p>
+
+        <!-- Dynamic Action Buttons with Animated Gold Button -->
+        <div class="links-container">
+            <a href="#" class="btn-gold">
+                ✨ Join the Founder's Edition
+            </a>
+            <a href="#" class="btn-glass">
+                📖 Read Chapter One Free
+            </a>
+            <a href="#" class="btn-glass">
+                🌐 Carry Ola's Story to the World
+            </a>
+            <a href="#" class="btn-glass">
+                🌍 Discover the Journey
+            </a>
+        </div>
+
+        <!-- Footer / Cause Section -->
+        <div class="footer-note">
+            <h3>Every book helps.</h3>
+            <p>A portion of the proceeds will support humanitarian work for people affected by war.</p>
+            <a href="#" class="btn-subtle">
+                🤝 Learn More
+            </a>
+        </div>
     </div>
 
-    <footer>
-      &copy; 2026 OLA OMER. All rights reserved.
-    </footer>
-
-  </div>
-
-  <script>
-    // Backpack toggle
-    function toggleBackpack() {
-      const details = document.getElementById('backpackDetails');
-      if (details.style.display === 'block') {
-        details.style.display = 'none';
-      } else {
-        details.style.display = 'block';
-      }
-    }
-
-    // Dynamic Live Visitor Counter logic
-    function updateVisitors() {
-      const min = 25;
-      const max = 42;
-      const current = Math.floor(Math.random() * (max - min + 1)) + min;
-      document.getElementById('visitorCount').innerText = `${current} readers exploring right now`;
-    }
-    
-    // Update every 2 minutes
-    setInterval(updateVisitors, 120000);
-  </script>
-
+    <!-- Live Counter Script -->
+    <script>
+        function updateCounter() {
+            const el = document.getElementById('counter-val');
+            let val = parseInt(el.innerText);
+            let change = Math.floor(Math.random() * 5) - 2;
+            val = Math.max(150, val + change);
+            el.innerText = val;
+        }
+        setInterval(updateCounter, 4000);
+    </script>
 </body>
 </html>
+
