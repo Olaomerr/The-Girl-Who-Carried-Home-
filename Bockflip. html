@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معاينة الكتاب - الصفحة التفاعلية</title>
+    <!-- Page-Flip CSS & JS -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #1e1e24;
+            background-image: radial-gradient(#2d2d38 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Cairo', sans-serif;
+            color: #2c2c2c;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px 10px;
+        }
+
+        .header-title {
+            color: #f4e8c1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header-title p {
+            font-size: 0.95rem;
+            color: #a0a0b0;
+            margin-top: 5px;
+        }
+
+        /* Container for the book */
+        .book-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #book {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            background: #faf8f5;
+            border-radius: 4px;
+        }
+
+        /* Page styling */
+        .page {
+            padding: 35px 30px;
+            background-color: #fdfbf7;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.03) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.03) 100%);
+            border: 1px solid #e8e2d5;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: 'Amiri', serif;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.02);
+        }
+
+        .page-cover {
+            background: #1b263b;
+            color: #f4e8c1;
+            border: 2px solid #c5a059;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .page-cover::before {
+            content: '';
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            pointer-events: none;
+        }
+
+        .cover-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #f4e8c1;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .cover-subtitle {
+            font-size: 1.1rem;
+            color: #e0d0b0;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .cover-author {
+            font-size: 1rem;
+            color: #c5a059;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .page-header {
+            font-size: 0.85rem;
+            color: #8c8275;
+            border-bottom: 1px solid #e5dec9;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .page-content {
+            font-size: 1.15rem;
+            line-height: 1.95;
+            color: #2b2b2b;
+            text-align: justify;
+            flex-grow: 1;
+        }
+
+        .chapter-title {
+            font-size: 1.6rem;
+            color: #8c1d1d;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .drop-cap {
+            float: right;
+            font-size: 3.2rem;
+            line-height: 0.8;
+            padding-top: 4px;
+            padding-left: 8px;
+            color: #8c1d1d;
+            font-weight: bold;
+        }
+
+        .quote-box {
+            background: #f4efe4;
+            border-right: 4px solid #8c1d1d;
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: #4a443b;
+        }
+
+        .page-footer {
+            font-size: 0.85rem;
+            color: #8c8275;
+            border-top: 1px solid #e5dec9;
+            padding-top: 8px;
+            margin-top: 15px;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .cta-page {
+            background-color: #faf6ee;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 25px;
+        }
+
+        .cta-btn {
+            background-color: #8c1d1d;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(140, 29, 29, 0.3);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .cta-btn:hover {
+            background-color: #6b1414;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(140, 29, 29, 0.4);
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ctrl-btn {
+            background: #2d2d38;
+            color: #f4e8c1;
+            border: 1px solid #4a4a5a;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .ctrl-btn:hover {
+            background: #3d3d4e;
+        }
+
+        .page-count-info {
+            color: #a0a0b0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 20px 18px;
+            }
+            .cover-title {
+                font-size: 1.7rem;
+            }
+            .page-content {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">
+        <h1>📖 معاينة الكتاب التفاعلية</h1>
+        <p>انقر على زوايا الصفحات أو اسحبها لتقليب الصفحات ككتاب حقيقي</p>
+    </div>
+
+    <div class="book-container">
+        <div id="book">
+            <!-- الغلاف -->
+            <div class="page page-cover" data-density="hard">
+                <div class="cover-title">رحلة نحو الأفق</div>
+                <div class="cover-subtitle">الجزء الأول: بداية الحكاية</div>
+                <div class="cover-author">بقلم المؤلف</div>
+            </div>
+
+            <!-- صفحة 1: مقدمة -->
+            <div class="page">
+                <div class="page-header">
+                    <span>رحلة نحو الأفق</span>
+                    <span>إهداء</span>
+                </div>
+                <div class="page-content" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <p style="font-style: italic; font-size: 1.25rem; color: #555;">
+                        "إلى كل من يبحث عن الإلهام بين صفحات الكلمات، وإلى كل قارئ يسعى لاكتشاف أسرار العالم من حوله..."
+                    </p>
+                </div>
+                <div class="page-footer">1</div>
+            </div>
+
+            <!-- صفحة 2: الفصل الأول -->
+            <div class="page">
+                <div class="page-header">
+                    <span>الفصل الأول</span>
+                    <span>رحلة نحو الأفق</span>
+                </div>
+                <div class="page-content">
+                    <div class="chapter-title">الفصل الأول: هدوء ما قبل العاصفة</div>
+                    <p>
+                        <span class="drop-cap">كـ</span>انت الشمس تميل نحو الغروب بخطى بطيئة، ترسم ألواناً أرجوانية دافئة على امتداد الأفق البعيد. في تلك اللحظة بالذات، لم يكن هناك ما يشير إلى أن الحياة على وشك أن تتغير بشكل كامل ومفاجئ.
+                    </p>
+                    <p style="margin-top: 15px;">
+                        جلس يتأمل الموج المتلاطم في صمت، محاولاً ترتيب أفكاره الشاردة التي تراكمت طوال السنوات الماضية. كل إجابة كان يبحث عنها كانت تفتح باباً لأسئلة أكثر عمقاً وتعقيداً.
+                    </p>
+                </div>
+                <div class="page-footer">2</div>
+            </div>
+
+            <!-- صفحة 3: متابعة الفصل الأول -->
+            <div class="page">
+                <div class="page-header">
+                    <span>الفصل الأول</span>
+                    <span>رحلة نحو الأفق</span>
+                </div>
+                <div class="page-content">
+                    <p>
+                        لم تكن القرارات التي اتخذها سهلة، لكنها كانت ضرورية. كانت تلك الخطوة الأولى نحو مجهول يختبئ خلف التلال الشاهقة.
+                    </p>
+                    <div class="quote-box">
+                        "إن القرارات الكبرى في حياتنا لا تأتي بصخب، بل تتشكل في هدوء الأعماق حتى تحين لحظة الانطلاق."
+                    </div>
+                    <p>
+                        فتح الحقيبة القديمة المعلقة بجانبه، واستخرج منها المذكرة الورقية التي احتفظ بها لسنوات طويلة. كانت الصفحات تحتوي على خرائط وملاحظات خطها بخط يده.
+                    </p>
+                </div>
+                <div class="page-footer">3</div>
+            </div>
+
+            <!-- صفحة 4: نهايات المعاينة ودعوة للشراء -->
+            <div class="page cta-page" data-density="hard">
+                <h2 style="font-size: 1.6rem; color: #1b263b; margin-bottom: 15px; font-family: 'Cairo', sans-serif;">هل أعجبك الجزء الأول؟</h2>
+                <p style="font-size: 1.05rem; color: #555; line-height: 1.7;">
+                    هذه كانت مجرد بداية القصة... تابع باقي الفصول واكتشف الأحداث المشوقة في النسخة الكاملة من الكتاب.
+                </p>
+                <a href="#" class="cta-btn" onclick="alert('سيوجه هذا الزائر لرابط الشراء أو الطلب المسبق!')">احصل على الكتاب الكامل الآن 🛒</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="ctrl-btn" id="btn-prev">السابقة ◄</button>
+        <span class="page-count-info" id="page-info">الصفحة 1 من 5</span>
+        <button class="ctrl-btn" id="btn-next">► التالية</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageFlip = new St.PageFlip(
+                document.getElementById('book'),
+                {
+                    width: 380, // عرض الصفحة الواحدة
+                    height: 520, // ارتفاع الصفحة
+                    size: "stretch",
+                    minWidth: 300,
+                    maxWidth: 500,
+                    minHeight: 400,
+                    maxHeight: 700,
+                    maxShadowOpacity: 0.5,
+                    showCover: true,
+                    mobileScrollSupport: false
+                }
+            );
+
+            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+            // التحكم بالأزرار
+            document.getElementById('btn-prev').addEventListener('click', () => {
+                pageFlip.flipPrev();
+            });
+
+            document.getElementById('btn-next').addEventListener('click', () => {
+                pageFlip.flipNext();
+            });
+
+            // تحديث رقم الصفحة
+            pageFlip.on('flip', (e) => {
+                document.getElementById('page-info').innerText = `الصفحة ${e.data + 1} من ${pageFlip.getPageCount()}`;
+            });
+        });
+    </script>
+</body>
+</html>
